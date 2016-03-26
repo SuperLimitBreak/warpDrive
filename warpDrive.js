@@ -74,3 +74,18 @@ function getTransform3D(start, end) {
         }
     }
 }
+
+function getCoOrds(elm) {
+    var rtn = [];
+
+    var pos = elm.offset();
+    var x = pos.left;
+    var y = pos.right;
+
+    rtn[0] = {"x": x, "y": y};
+    rtn[1] = {"x": x + elm.width, "y": y};
+    rtn[2] = {"x": x, "y": y + elm.height};
+    rtn[3] = {"x": x + elm.width, "y": y + elm.height};
+
+    return rtn;
+}
