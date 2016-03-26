@@ -14,21 +14,22 @@ function getTransform3D(start, end) {
     // H o |startYs| = Ks |endYs|
     //     |   1   |      |  1  |
 
-    p1 = start[0];
-    p2 = start[1];
-    p3 = start[2];
-    p4 = start[3];
+    var m1 = []; // the 8x8 matrix for solving for H
+    var m2 = []; // the 8x1 matrix for solving for H
 
-    q1 = end[0];
-    q2 = end[1];
-    q3 = end[2];
-    q4 = end[3];
+    // Loop vars --------------------------------------------------------------
+    var x;
+    var y;
+    var p;
+    var q;
+    var i;
 
-    m1 = []; // the 8x8 matrix for solving for H
-    m2 = [];
+    var row1;
+    var row2;
+    // ------------------------------------------------------------------------
 
     // For each of the 4 co-ordinate points
-    for (i=0; i<4; i++) {
+    for (i = 0; i < 4; i++) {
         x = start[i].x;
         y = start[i].y;
 
@@ -52,15 +53,24 @@ function getTransform3D(start, end) {
         m2.push(q);
     }
 
-    h = numeric.solve(m1,m2)
+    var h = numeric.solve(m1,m2);
 
-    //return as 4x4
-    return [
+    //as 4x4
+    var m3D = [
         [h[0], h[1], 0, h[2]],
         [h[3], h[4], 0, h[5]],
         [   0,    0, 1,    0],
         [h[6], h[7], 0,    1]
     ];
 
+    // CSS3 expects in collumn major form
+    var rtnString = "";
+    var j;
 
+    for (i = 0; i < 4; i++){
+        for (j = 0; i < 4; j++){
+            rtnString += m3D[j][i];
+            rtnString += ",";
+        }
+    }
 }
